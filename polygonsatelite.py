@@ -19,7 +19,7 @@ st.set_page_config(page_title="Geo-Ukur Pro v3.1", layout="wide")
 st.title("🗺️ Visualisasi Poligon (Label Stesen Rapat & Di Luar)")
 
 # ==========================================
-# MENU TETAPAN (SIDEBAR)
+# MENU TETAPAN PETA (SIDEBAR)
 # ==========================================
 st.sidebar.header("⚙️ Tetapan Peta")
 
@@ -32,15 +32,30 @@ if papar_satelit:
 # SLIDER UNTUK ZOOM OUT (MARGIN)
 margin_peta = st.sidebar.slider("🔍 Zum Keluar Peta (Margin dalam Meter)", min_value=5, max_value=200, value=20)
 
+# SLIDER BARU UNTUK SAIZ TITIK STESEN
+saiz_titik = st.sidebar.slider("🔴 Saiz Titik/Point Stesen", min_value=5, max_value=150, value=30)
+
 st.sidebar.markdown("---")
 
 # ==========================================
-# MENU TETAPAN LABEL
+# MENU TETAPAN LABEL (INTERAKTIF)
 # ==========================================
 st.sidebar.header("🏷️ Tetapan Label")
+
+# 1. Label Stesen
 papar_label_stesen = st.sidebar.checkbox("Papar Label Stesen (STN)", value=True)
+if papar_label_stesen:
+    saiz_label_stesen = st.sidebar.slider("Saiz Tulisan Stesen", min_value=3, max_value=24, value=8)
+
+# 2. Label Bearing & Jarak
 papar_label_garisan = st.sidebar.checkbox("Papar Bearing & Jarak", value=True)
+if papar_label_garisan:
+    saiz_label_garisan = st.sidebar.slider("Saiz Tulisan Bearing/Jarak", min_value=3, max_value=20, value=7)
+
+# 3. Label Luas
 papar_label_luas = st.sidebar.checkbox("Papar Label Luas", value=True)
+if papar_label_luas:
+    saiz_label_luas = st.sidebar.slider("Saiz Tulisan Luas", min_value=4, max_value=30, value=9)
 
 uploaded_file = st.file_uploader("Upload fail CSV anda", type=['csv'])
 
@@ -67,7 +82,9 @@ if uploaded_file is not None:
         warna_garisan = 'cyan' if papar_satelit else 'black'
         
         gdf.plot(ax=ax, facecolor='none', edgecolor=warna_garisan, linewidth=1.5, zorder=1)
-        ax.scatter(df['E'], df['N'], color='red', s=30, zorder=5)
+        
+        # ---> SAIZ TITIK DIPAUKAN KEPADA SLIDER <---
+        ax.scatter(df['E'], df['N'], color='red', s=saiz_titik, zorder=5)
 
         num_points = len(df)
         for i in range(num_points):
@@ -93,10 +110,10 @@ if uploaded_file is not None:
 
             mid_e, mid_n = (p1['E'] + p2['E']) / 2, (p1['N'] + p2['N']) / 2
 
-            # LOGIK ON/OFF: BEARING & JARAK
+            # LOGIK ON/OFF & SAIZ INTERAKTIF: BEARING & JARAK
             if papar_label_garisan:
                 ax.text(mid_e, mid_n, f"{bearing_text}\n{jarak:.2f}m", 
-                        fontsize=7, color='darkred', fontweight='bold',
+                        fontsize=saiz_label_garisan, color='darkred', fontweight='bold',
                         ha='center', va='center', rotation=txt_angle_deg,
                         bbox=dict(facecolor='white', alpha=0.8, edgecolor='none', pad=0.5))
 
@@ -114,16 +131,16 @@ if uploaded_file is not None:
             warna_stn = 'yellow' if papar_satelit else 'blue'
             latar_belakang_stn = dict(facecolor='black', alpha=0.4, edgecolor='none', pad=0.1) if papar_satelit else None
 
-            # LOGIK ON/OFF: LABEL STESEN
+            # LOGIK ON/OFF & SAIZ INTERAKTIF: LABEL STESEN
             if papar_label_stesen:
                 ax.text(label_e, label_n, str(p1['STN']), 
-                        fontsize=8, color=warna_stn, fontweight='bold',
+                        fontsize=saiz_label_stesen, color=warna_stn, fontweight='bold',
                         ha='center', va='center', bbox=latar_belakang_stn)
 
-        # LOGIK ON/OFF: LUAS DI TENGAH
+        # LOGIK ON/OFF & SAIZ INTERAKTIF: LUAS DI TENGAH
         if papar_label_luas:
             ax.text(centroid.x, centroid.y, f"LUAS\n{luas:.2f} m²", 
-                    ha='center', va='center', fontsize=9, fontweight='bold', color='darkgreen',
+                    ha='center', va='center', fontsize=saiz_label_luas, fontweight='bold', color='darkgreen',
                     bbox=dict(facecolor='white', alpha=0.8, edgecolor='green', boxstyle='round,pad=0.3'))
 
         # =================================================================
