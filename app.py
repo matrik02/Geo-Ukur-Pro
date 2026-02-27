@@ -1,7 +1,11 @@
 import streamlit as st
 
 # Pastikan ini baris pertama dalam kod
-st.set_page_config(page_title="Sistem Geo-Ukur Selamat", layout="wide")
+st.set_page_config(
+    page_title="Sistem Geo-Ukur Selamat", 
+    layout="wide", 
+    initial_sidebar_state="collapsed" # Ini akan menyorokkan sidebar secara automatik
+)
 # --- KOD UNTUK HIDE MENU & FOOTER ---
 hide_st_style = """
             <style>
@@ -61,6 +65,7 @@ else:
         st.session_state['login_berjaya'] = False
 
         st.rerun()
+
 
 
 
