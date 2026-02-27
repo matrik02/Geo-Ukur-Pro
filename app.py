@@ -9,7 +9,7 @@ st.set_page_config(
 # --- KOD UNTUK HIDE MENU & FOOTER ---
 hide_st_style = """
             <style>
-            MainMenu {visibility: hidden;}
+            #MainMenu {visibility: hidden;}
             footer {visibility: hidden;}
             
             </style>
@@ -66,6 +66,7 @@ else:
         st.session_state['login_berjaya'] = False
 
         st.rerun()
+
 
 
 
