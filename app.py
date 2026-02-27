@@ -7,32 +7,31 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# 2. CSS untuk Hide Ikon Header Kanan (Share, Star, GitHub) & Footer
-# Butang Sidebar (>) akan kekal visible dan boleh diklik
+# 2. CSS AGRESIF UNTUK HIDE IKON HEADER KANAN (SIDEBAR TETAP ADA)
 hide_st_style = """
     <style>
-    /* Sembunyikan footer */
-    footer {visibility: hidden;}
+    /* Sembunyikan footer (Made with Streamlit) */
+    footer {visibility: hidden !important;}
 
-    /* Sembunyikan Toolbar Header sebelah kanan sepenuhnya */
-    header[data-testid="stHeader"] {
-        background-color: rgba(0,0,0,0);
-    }
-    
-    div[data-testid="stStatusWidget"], 
-    .stAppHeader > div:nth-child(2),
-    .stAppHeader > div:nth-child(3) {
+    /* Sembunyikan keseluruhan toolbar sebelah kanan (Share, Star, GitHub, Edit, dsb.) */
+    div[data-testid="stToolbar"] {
         display: none !important;
     }
 
-    /* Sembunyikan butang Deploy & MainMenu */
+    /* Sembunyikan butang Deploy & MainMenu (Tiga Titik) */
     .stAppDeployButton {display:none !important;}
     #MainMenu {visibility: hidden !important;}
 
-    /* Pastikan butang buka sidebar (>) kekal nampak */
+    /* Pastikan Header telus supaya tidak menghalang peta */
+    header[data-testid="stHeader"] {
+        background-color: rgba(0,0,0,0) !important;
+        border: none !important;
+    }
+
+    /* Pastikan butang buka sidebar (>) di kiri atas tetap nampak dan boleh diklik */
     button[data-testid="stBaseButton-headerNoPadding"] {
         visibility: visible !important;
-        color: black !important;
+        z-index: 999 !important;
     }
     </style>
     """
@@ -77,7 +76,7 @@ else:
     # --- HALAMAN 2: SISTEM UTAMA ---
     try:
         import polygonsatelite
-        # Paparkan logo juga di Sidebar untuk identiti
+        # Paparkan logo di Sidebar
         st.sidebar.image("logo.jpg", use_container_width=True)
         st.sidebar.markdown("---")
         
@@ -86,15 +85,7 @@ else:
     except Exception as e:
         st.error(f"Gagal memuatkan sistem utama: {e}")
     
-    # Butang Logout
+    # Butang Logout di Sidebar
     if st.sidebar.button("Log Keluar (Logout)"):
         st.session_state['login_berjaya'] = False
         st.rerun()
-
-
-
-
-
-
-
-
