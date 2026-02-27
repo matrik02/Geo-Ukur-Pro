@@ -5,10 +5,11 @@ st.set_page_config(page_title="Sistem Geo-Ukur Selamat", layout="wide")
 # --- KOD UNTUK HIDE MENU & FOOTER ---
 hide_st_style = """
             <style>
-            #MainMenu {visibility: hidden;}
             footer {visibility: hidden;}
-            
+            header {visibility: hidden;}
             </style>
+            """
+st.markdown(hide_st_style, unsafe_allow_html=True)
             """
 st.markdown(hide_st_style, unsafe_allow_html=True)
 # 1. Tetapkan Kata Laluan
@@ -62,5 +63,6 @@ else:
         st.session_state['login_berjaya'] = False
 
         st.rerun()
+
 
 
