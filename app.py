@@ -7,16 +7,15 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# --- KOD CSS KHAS: HAPUS IKON KANAN, KEKALKAN BUTANG SIDEBAR (>) ---
+# --- KOD CSS TERKINI: HAPUS IKON KANAN, PAKSA BUTANG SIDEBAR (>) MUNCUL ---
 hide_st_style = """
             <style>
-            /* 1. Sembunyikan Footer & Menu Tiga Titik */
+            /* 1. Sembunyikan Footer & Menu Tiga Titik sepenuhnya */
             footer {visibility: hidden !important;}
             #MainMenu {visibility: hidden !important;}
 
-            /* 2. Sembunyikan Toolbar Kanan (Share, Star, GitHub, Edit) */
-            /* Kita guna display:none pada data-testid stToolbar supaya ikon hilang terus */
-            div[data-testid="stToolbar"] {
+            /* 2. Sembunyikan Toolbar Kanan (Share, Star, GitHub, Edit) secara total */
+            [data-testid="stHeaderActionElements"] {
                 display: none !important;
             }
 
@@ -25,20 +24,27 @@ hide_st_style = """
                 display: none !important;
             }
 
-            /* 4. KEKALKAN BUTANG SIDEBAR (>) */
-            /* Kita pastikan header tidak disembunyikan, cuma toolbar sahaja */
+            /* 4. PASTIKAN BUTANG SIDEBAR (>) KEKAL ADA */
+            /* Kita buat header lutsinar supaya tidak menutup butang */
             header[data-testid="stHeader"] {
                 background-color: rgba(0,0,0,0) !important;
-                color: black !important;
             }
             
-            /* Memastikan butang > jelas kelihatan dengan latar belakang putih sedikit */
-            button[data-testid="stBaseButton-headerNoPadding"] {
+            /* Paksa butang sidebar (ikon >) untuk muncul dan boleh diklik */
+            /* Kita beri warna latar belakang kelabu cerah supaya butang nampak jelas */
+            [data-testid="stSidebarCollapseIcon"] {
                 visibility: visible !important;
-                background-color: white !important;
-                border: 1px solid #ddd !important;
+                display: block !important;
+                background-color: #f0f2f6 !important;
                 border-radius: 50% !important;
-                z-index: 9999 !important;
+                padding: 5px !important;
+                z-index: 99999 !important;
+            }
+
+            /* Jika menggunakan butang header standard Streamlit */
+            button[aria-label="Open sidebar"] {
+                visibility: visible !important;
+                display: block !important;
             }
             </style>
             """
@@ -83,7 +89,7 @@ else:
     # --- HALAMAN 2: SISTEM UTAMA ---
     try:
         import polygonsatelite
-        # Tambah tajuk kecil di sidebar supaya butang > berfungsi dengan baik
+        # Sidebar akan muncul bila butang > diklik
         st.sidebar.title("Menu Tetapan")
         polygonsatelite.main() 
     except Exception as e:
