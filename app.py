@@ -2,7 +2,15 @@ import streamlit as st
 
 # Pastikan ini baris pertama dalam kod
 st.set_page_config(page_title="Sistem Geo-Ukur Selamat", layout="wide")
-
+# --- KOD UNTUK HIDE MENU & FOOTER ---
+hide_st_style = """
+            <style>
+            #MainMenu {visibility: hidden;}
+            footer {visibility: hidden;}
+            header {visibility: hidden;}
+            </style>
+            """
+st.markdown(hide_st_style, unsafe_allow_html=True)
 # 1. Tetapkan Kata Laluan
 KATA_LALUAN_BETUL = "admin123"
 
@@ -52,4 +60,5 @@ else:
     # Butang Logout di Sidebar
     if st.sidebar.button("Log Keluar (Logout)"):
         st.session_state['login_berjaya'] = False
+
         st.rerun()
