@@ -7,51 +7,50 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# --- CSS TINGKAT TINGGI: PENGASINGAN BUTANG SIDEBAR & IKON DEPLOY/SHARE ---
+# --- CSS TINGKAT TINGGI: HIDE IKON KANAN, KEKALKAN BUTANG SIDEBAR ---
 hide_st_style = """
             <style>
-            /* 1. Sembunyikan Footer & Menu Tiga Titik */
+            /* 1. Sembunyikan Footer & Menu Tiga Titik sepenuhnya */
             footer {visibility: hidden !important;}
             #MainMenu {visibility: hidden !important;}
 
-            /* 2. SEMBUNYIKAN BAHAGIAN KANAN HEADER SAHAJA (Share, Star, GitHub, Deploy) */
-            /* Kita sasarkan container aksi header di sebelah kanan */
-            header div[data-testid="stHeaderActionElements"],
-            header .stAppDeployButton,
-            header div[data-testid="stStatusWidget"] {
+            /* 2. PADAMKAN BAHAGIAN KANAN HEADER (Share, Star, GitHub, Edit, Deploy) */
+            /* Ini akan menghalang orang daripada klik ikon 'Edit' atau melihat kod */
+            [data-testid="stHeaderActionElements"], 
+            .stAppDeployButton, 
+            header div:nth-child(2) {
                 display: none !important;
                 visibility: hidden !important;
             }
 
-            /* 3. KEKALKAN & ASINGKAN BUTANG SIDEBAR (>>) */
-            /* Kita pastikan butang di sebelah kiri tidak terkesan */
-            header[data-testid="stHeader"] {
-                background-color: rgba(0,0,0,0) !important;
-                display: flex !important;
-                justify-content: flex-start !important; /* Paksa elemen ke kiri */
-            }
-
-            /* Paksa butang buka sidebar muncul dengan jelas */
-            button[data-testid="stBaseButton-headerNoPadding"],
-            [data-testid="stSidebarCollapseIcon"],
-            button[aria-label="Open sidebar"] {
+            /* 3. KEKALKAN BUTANG SIDEBAR (>>) DAN PASTIKAN IA BOLEH DIKLIK */
+            /* Kita sasarkan butang sidebar secara spesifik */
+            [data-testid="stSidebarCollapseIcon"], 
+            button[aria-label="Open sidebar"],
+            button[data-testid="stBaseButton-headerNoPadding"] {
                 visibility: visible !important;
                 display: flex !important;
-                background-color: #f0f2f6 !important;
+                background-color: #f0f2f6 !important; /* Warna kelabu lembut supaya nampak */
                 border-radius: 50% !important;
-                margin-left: 10px !important;
-                z-index: 99999 !important;
+                z-index: 999999 !important;
+                position: relative !important;
             }
 
-            /* Menghapuskan elemen-elemen hantu yang mungkin muncul di kanan */
-            .st-emotion-cache-h5rgaw, .st-emotion-cache-1647z97 {
-                display: none !important;
+            /* Pastikan header tidak menghalang klik (pointer-events) */
+            header[data-testid="stHeader"] {
+                background-color: rgba(0,0,0,0) !important;
+                pointer-events: none !important;
+            }
+            
+            /* Benarkan semula klik hanya pada butang sidebar */
+            [data-testid="stSidebarCollapseIcon"], button[aria-label="Open sidebar"] {
+                pointer-events: auto !important;
             }
             </style>
             """
 st.markdown(hide_st_style, unsafe_allow_html=True)
 
-# --- LOGIK LOGIN (Kekalkan yang asal) ---
+# --- LOGIK LOGIN ---
 KATA_LALUAN_BETUL = "admin123"
 if 'login_berjaya' not in st.session_state:
     st.session_state['login_berjaya'] = False
@@ -81,7 +80,7 @@ else:
         st.sidebar.title("Menu Tetapan")
         polygonsatelite.main() 
     except Exception as e:
-        st.error(f"Gagal memuatkan sistem utama: {e}")
+        st.error(f"Ralat: {e}")
     
     if st.sidebar.button("Log Keluar"):
         st.session_state['login_berjaya'] = False
