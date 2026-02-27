@@ -7,11 +7,23 @@ st.set_page_config(
     initial_sidebar_state="collapsed" # Ini akan menyorokkan sidebar secara automatik
 )
 # --- KOD UNTUK HIDE MENU & FOOTER ---
+# --- KOD UNTUK HIDE IKON KANAN SAHAJA (SIDEBAR KEKAL BOLEH KLIK) ---
 hide_st_style = """
             <style>
-            #MainMenu {visibility: hidden;}
+            /* 1. Sembunyikan footer (Made with Streamlit) */
             footer {visibility: hidden;}
+
+            /* 2. Sembunyikan butang-butang di header sebelah kanan (Share, Star, GitHub, etc.) */
+            .stAppHeader > div:nth-child(3) {
+                visibility: hidden;
+            }
+
+            /* 3. Pastikan butang Deploy tidak muncul */
+            .stAppDeployButton {display:none;}
             
+            /* 4. Jika anda mahu MainMenu (3 titik) muncul semula, 
+               kekalkan baris di bawah sebagai 'visible', jika tidak kekalkan 'hidden' */
+            #MainMenu {visibility: hidden;}
             </style>
             """
 st.markdown(hide_st_style, unsafe_allow_html=True)
@@ -66,6 +78,7 @@ else:
         st.session_state['login_berjaya'] = False
 
         st.rerun()
+
 
 
 
