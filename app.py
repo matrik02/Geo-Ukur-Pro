@@ -4,31 +4,35 @@ import streamlit as st
 st.set_page_config(
     page_title="Sistem Pengurusan Maklumat Tanah", 
     layout="wide", 
-    initial_sidebar_state="collapsed"
+    initial_sidebar_state="collapsed" # Sidebar tertutup secara lalai untuk ruang luas
 )
 
-# 2. CSS AGRESIF UNTUK HIDE IKON HEADER KANAN (SIDEBAR TETAP ADA)
+# 2. CSS UNTUK HIDE IKON HEADER KANAN SAHAJA (BUTANG SIDEBAR KEKAL)
 hide_st_style = """
     <style>
     /* Sembunyikan footer (Made with Streamlit) */
     footer {visibility: hidden !important;}
 
-    /* Sembunyikan keseluruhan toolbar sebelah kanan (Share, Star, GitHub, Edit, dsb.) */
+    /* Sembunyikan Toolbar Header sebelah kanan (Share, Star, GitHub, Edit) */
     div[data-testid="stToolbar"] {
         display: none !important;
     }
 
-    /* Sembunyikan butang Deploy & MainMenu (Tiga Titik) */
+    /* Sembunyikan butang Deploy yang mengganggu */
     .stAppDeployButton {display:none !important;}
+
+    /* Sembunyikan menu tiga titik (MainMenu) */
     #MainMenu {visibility: hidden !important;}
 
-    /* Pastikan Header telus supaya tidak menghalang peta */
+    /* PASTIKAN HEADER LUTSINAR: 
+       Supaya butang sidebar (>) di kiri atas nampak, 
+       tapi bar putih tidak menghalang peta. */
     header[data-testid="stHeader"] {
         background-color: rgba(0,0,0,0) !important;
-        border: none !important;
+        color: white !important;
     }
 
-    /* Pastikan butang buka sidebar (>) di kiri atas tetap nampak dan boleh diklik */
+    /* Pastikan butang buka sidebar (>) kekal nampak dan boleh diklik */
     button[data-testid="stBaseButton-headerNoPadding"] {
         visibility: visible !important;
         z-index: 999 !important;
@@ -76,16 +80,17 @@ else:
     # --- HALAMAN 2: SISTEM UTAMA ---
     try:
         import polygonsatelite
-        # Paparkan logo di Sidebar
+        # Tambah logo di Sidebar supaya nampak pro
         st.sidebar.image("logo.jpg", use_container_width=True)
         st.sidebar.markdown("---")
         
-        # Panggil fungsi utama dari polygonsatelite.py
+        # Panggil fungsi utama dari fail polygonsatelite.py
         polygonsatelite.main() 
     except Exception as e:
         st.error(f"Gagal memuatkan sistem utama: {e}")
     
-    # Butang Logout di Sidebar
+    # Butang Logout di bawah sidebar
+    st.sidebar.markdown("---")
     if st.sidebar.button("Log Keluar (Logout)"):
         st.session_state['login_berjaya'] = False
         st.rerun()
