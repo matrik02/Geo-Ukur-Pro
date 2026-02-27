@@ -6,7 +6,6 @@ st.set_page_config(
     layout="wide", 
     initial_sidebar_state="collapsed" # Ini akan menyorokkan sidebar secara automatik
 )
-# --- KOD UNTUK HIDE MENU & FOOTER ---
 # --- KOD UNTUK HIDE IKON KANAN SAHAJA (SIDEBAR KEKAL BOLEH KLIK) ---
 hide_st_style = """
             <style>
@@ -78,6 +77,7 @@ else:
         st.session_state['login_berjaya'] = False
 
         st.rerun()
+
 
 
 
