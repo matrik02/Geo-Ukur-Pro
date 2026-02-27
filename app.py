@@ -7,15 +7,19 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# --- KOD CSS TERKINI: HAPUS IKON KANAN, PAKSA BUTANG SIDEBAR (>) MUNCUL ---
+# --- KOD CSS TERKINI: HAPUS IKON KANAN SECARA TOTAL, KEKALKAN BUTANG SIDEBAR (>) ---
 hide_st_style = """
             <style>
             /* 1. Sembunyikan Footer & Menu Tiga Titik sepenuhnya */
             footer {visibility: hidden !important;}
             #MainMenu {visibility: hidden !important;}
 
-            /* 2. Sembunyikan Toolbar Kanan (Share, Star, GitHub, Edit) secara total */
-            [data-testid="stHeaderActionElements"] {
+            /* 2. Sembunyikan Toolbar Kanan (Share, Star, GitHub, Edit) */
+            /* Kita sasarkan semua elemen status dan aksi di header */
+            [data-testid="stHeaderActionElements"], 
+            [data-testid="stStatusWidget"],
+            header .st-emotion-cache-1647z97, 
+            header .st-emotion-cache-12fmjuu {
                 display: none !important;
             }
 
@@ -25,26 +29,24 @@ hide_st_style = """
             }
 
             /* 4. PASTIKAN BUTANG SIDEBAR (>) KEKAL ADA */
-            /* Kita buat header lutsinar supaya tidak menutup butang */
             header[data-testid="stHeader"] {
                 background-color: rgba(0,0,0,0) !important;
             }
             
-            /* Paksa butang sidebar (ikon >) untuk muncul dan boleh diklik */
-            /* Kita beri warna latar belakang kelabu cerah supaya butang nampak jelas */
-            [data-testid="stSidebarCollapseIcon"] {
-                visibility: visible !important;
-                display: block !important;
-                background-color: #f0f2f6 !important;
-                border-radius: 50% !important;
-                padding: 5px !important;
-                z-index: 99999 !important;
-            }
-
-            /* Jika menggunakan butang header standard Streamlit */
+            /* Paksa butang sidebar (ikon >) untuk muncul */
+            /* Kita sasarkan butang itu sendiri secara spesifik */
+            [data-testid="stSidebarCollapseIcon"],
             button[aria-label="Open sidebar"] {
                 visibility: visible !important;
-                display: block !important;
+                display: flex !important;
+                background-color: #f0f2f6 !important;
+                border-radius: 50% !important;
+                z-index: 99999 !important;
+            }
+            
+            /* Menghilangkan garisan putih nipis di header yang mungkin mengganggu */
+            header {
+                border-bottom: none !important;
             }
             </style>
             """
@@ -100,3 +102,4 @@ else:
     if st.sidebar.button("Log Keluar (Logout)"):
         st.session_state['login_berjaya'] = False
         st.rerun()
+
