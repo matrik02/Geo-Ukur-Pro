@@ -7,44 +7,43 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# --- CSS TINGKAT TINGGI: PENGASINGAN BUTANG SIDEBAR & IKON DEPLOY/SHARE ---
+# --- KOD CSS MODEN: HILANGKAN IKON KANAN, KEKALKAN BUTANG SIDEBAR SAHAJA ---
 hide_st_style = """
             <style>
             /* 1. Sembunyikan Footer & Menu Tiga Titik */
             footer {visibility: hidden !important;}
             #MainMenu {visibility: hidden !important;}
 
-            /* 2. SEMBUNYIKAN BAHAGIAN KANAN HEADER SAHAJA (Share, Star, GitHub, Deploy) */
-            /* Kita sasarkan container aksi header di sebelah kanan */
-            header div[data-testid="stHeaderActionElements"],
-            header .stAppDeployButton,
-            header div[data-testid="stStatusWidget"] {
+            /* 2. SEMBUNYIKAN SELURUH BAHAGIAN KANAN HEADER */
+            /* Ini akan memadamkan Share, Star, Edit, GitHub, dan Deploy */
+            [data-testid="stHeaderActionElements"], 
+            .stAppDeployButton, 
+            [data-testid="stStatusWidget"] {
                 display: none !important;
-                visibility: hidden !important;
             }
 
-            /* 3. KEKALKAN & ASINGKAN BUTANG SIDEBAR (>>) */
-            /* Kita pastikan butang di sebelah kiri tidak terkesan */
+            /* 3. ASINGKAN & PAKSA BUTANG SIDEBAR (>>) UNTUK MUNCUL */
+            /* Kita buat header lutsinar supaya butang di bawahnya tidak terlindung */
             header[data-testid="stHeader"] {
                 background-color: rgba(0,0,0,0) !important;
-                display: flex !important;
-                justify-content: flex-start !important; /* Paksa elemen ke kiri */
+                pointer-events: none; /* Supaya klik boleh tembus ke butang di bawah */
             }
 
-            /* Paksa butang buka sidebar muncul dengan jelas */
-            button[data-testid="stBaseButton-headerNoPadding"],
-            [data-testid="stSidebarCollapseIcon"],
-            button[aria-label="Open sidebar"] {
+            /* Aktifkan semula klik hanya untuk butang sidebar */
+            [data-testid="stSidebarCollapseIcon"], 
+            button[aria-label="Open sidebar"],
+            button[data-testid="stBaseButton-headerNoPadding"] {
+                pointer-events: auto !important;
                 visibility: visible !important;
                 display: flex !important;
-                background-color: #f0f2f6 !important;
+                background-color: #f0f2f6 !important; /* Warna kelabu lembut supaya nampak */
                 border-radius: 50% !important;
                 margin-left: 10px !important;
-                z-index: 99999 !important;
+                z-index: 999999 !important;
             }
 
-            /* Menghapuskan elemen-elemen hantu yang mungkin muncul di kanan */
-            .st-emotion-cache-h5rgaw, .st-emotion-cache-1647z97 {
+            /* Menghapuskan sebarang elemen 'ghost' yang mungkin masih ada di kanan header */
+            header > div:first-child > div:nth-child(2) {
                 display: none !important;
             }
             </style>
@@ -86,3 +85,4 @@ else:
     if st.sidebar.button("Log Keluar"):
         st.session_state['login_berjaya'] = False
         st.rerun()
+
