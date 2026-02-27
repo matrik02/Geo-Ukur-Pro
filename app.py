@@ -10,8 +10,6 @@ hide_st_style = """
             </style>
             """
 st.markdown(hide_st_style, unsafe_allow_html=True)
-            """
-st.markdown(hide_st_style, unsafe_allow_html=True)
 # 1. Tetapkan Kata Laluan
 KATA_LALUAN_BETUL = "admin123"
 
@@ -63,6 +61,7 @@ else:
         st.session_state['login_berjaya'] = False
 
         st.rerun()
+
 
 
 
